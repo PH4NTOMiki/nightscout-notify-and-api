@@ -13,6 +13,7 @@ if(makerKey && makerKey.length===43){useMaker=true;}
 if(PushoverToken && PushoverUser && PushoverToken.length===30 && PushoverUser.length===30){usePushover=true;}
 
 function serverHandler(){useServer=true;express=require('express');cors=require('cors');app=express();app.use(cors());server=app.listen(process.env.PORT || 3000);console.log("listening on port: "+(process.env.PORT || 3000));
+app.all('/'),function(req,res){res.contentType("text/html");res.end("Available end-points are: '/json'(with support for JSONP, parameter name is 'callback'), '/xml' and '/rss'");}
 app.all('/json',function(req,res){
 var rtrn=JSON.parse(JSON.stringify(currRec));
 if(rtrn.sgv==""&&rtrn.trend==0&&rtrn.direction==""&&rtrn.datetime==0){rtrn['status']="ERR";} else {rtrn['status']="OK";}
