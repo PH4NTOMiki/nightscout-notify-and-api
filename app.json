@@ -1,0 +1,41 @@
+{
+  "name": "NightScout Notify & API",
+  "repository": "https://github.com/PH4NTOMiki/nightscout-notify-and-api",
+  "env": {
+    "NIGHTSCOUT": {
+      "description": "REQUIRED: NightScout URL, e.g. my-cgm.herokuapp.com or my-cgm.azurewebsites.net",
+      "value": "",
+      "required": true
+    },
+	"MAKER_KEY": {
+      "description": "Your Maker Key, you could find it on https://ifttt.com/services/maker_webhooks/settings It's in the URL field after 'https://maker.ifttt.com/use/'",
+      "value": "",
+      "required": false
+    },
+	"PUSHOVER_TOKEN": {
+      "description": "Pushover Token you get on https://pushover.net/",
+      "value": "",
+      "required": false
+    },
+	"PUSHOVER_USER": {
+      "description": "Pushover User Key you get on https://pushover.net/",
+      "value": "",
+      "required": false
+    },
+	"WEB_SERVER": {
+      "description": "REQUIRED: Do you want to use Web-Server(end-point are: '/json','/xml','/rss', and on json end-point you can use JSONP with callback query parameter). Possible values are on/off",
+      "value": "on",
+      "required": true
+    },
+	"LOW_BG": {
+      "description": "Low BG value you would like to get alert. For this use unit you use on you NightScout portal, if you use different unit, it's OK, application will convert it",
+      "value": "5.6",
+      "required": true
+    },
+	"HIGH_BG": {
+      "description": "High BG value you would like to get alert. For this use unit you use on you NightScout portal, if you use different unit, it's OK, application will convert it",
+      "value": "10",
+      "required": true
+    }
+  }
+}
