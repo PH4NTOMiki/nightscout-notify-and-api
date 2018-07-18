@@ -1,5 +1,6 @@
 (function (){
 var request = require('request');
+if(process.env.URL)console.log(process.env.URL);
 
 var arrows={Flat:"\u2192",FortyFiveUp:"\u2197",FortyFiveDown:"\u2198",SingleUp:"\u2191",SingleDown:"\u2193",DoubleUp:"\u21C8",DoubleDown:"\u21CA"},tempdate=3589420,isEmpty=false,useMaker=false,usePushover=false,useServer=false,express,cors,app,server,unit,sgvValue,sgvTime,firstResp=true,currRec={sgv:"",trend:0,direction:"",datetime:0,bgdelta:0,battery:""};
 
