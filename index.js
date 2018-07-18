@@ -1,14 +1,14 @@
 (function (){
 var request = require('request');
-if(process.env.HEROKU_APP_NAME)console.log(process.env.HEROKU_APP_NAME);
-
 var arrows={Flat:"\u2192",FortyFiveUp:"\u2197",FortyFiveDown:"\u2198",SingleUp:"\u2191",SingleDown:"\u2193",DoubleUp:"\u21C8",DoubleDown:"\u21CA"},tempdate=3589420,isEmpty=false,useMaker=false,usePushover=false,useServer=false,express,cors,app,server,unit,sgvValue,sgvTime,firstResp=true,currRec={sgv:"",trend:0,direction:"",datetime:0,bgdelta:0,battery:""};
 
 var nightscout=(process.env.NIGHTSCOUT)?(process.env.NIGHTSCOUT+""):"";
+var siteUrl=(process.env.SITE_URL)?(process.env.SITE_URL+""):"";
 var makerKey=(process.env.MAKER_KEY)?(process.env.MAKER_KEY+""):"";
 var PushoverToken=(process.env.PUSHOVER_TOKEN)?(process.env.PUSHOVER_TOKEN+""):"";
 var PushoverUser=(process.env.PUSHOVER_USER)?(process.env.PUSHOVER_USER+""):"";
 var webServer=(process.env.WEB_SERVER)?(process.env.WEB_SERVER+""):"";
+if(siteUrl.length<=5){console.info("Site Url not provided!!!");return;}
 if(nightscout.length<=5){console.info("NightScout URL not provided!!!");return;/*process.kill(process.pid, 'SIGTERM');*/}
 if(makerKey && makerKey.length===43){useMaker=true;}
 if(PushoverToken && PushoverUser && PushoverToken.length===30 && PushoverUser.length===30){usePushover=true;}
@@ -89,7 +89,9 @@ sendPushover("Nightscout CGM Reading Received",sgvValue,deltaArrow,iob);
 sendMakerRequest("miki-cgmreading",sgvValue,deltaArrow,iob);
 if (sgvValue<=lowBg){sendPushover("Nightscout LOW BG: "+sgvValue+" "+deltaArrow,sgvValue,deltaArrow,iob);sendMakerRequest("miki-lowbg",sgvValue,deltaArrow,iob)
 } else if (sgvValue>=highBg){sendPushover("Nightscout HIGH BG: "+sgvValue+" "+deltaArrow,sgvValue,deltaArrow,iob);sendMakerRequest("miki-highbg",sgvValue,deltaArrow,iob)}}
- 
+
+setTimeout(function(){request.get(siteUrl);},10000);
+setInterval(function(){request.get(siteUrl);},5*60*1000); 
 //function leadZero(m){if(m<10){m="0"+m;}return m;}
 //var timenow=new Date(),hr=(timenow.getHours()+2<24)?(timenow.getHours()+2):(timenow.getHours()+2-24),timestart=leadZero(hr)+":"+leadZero(timenow.getMinutes());
 })();
