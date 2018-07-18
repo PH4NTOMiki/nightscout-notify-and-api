@@ -9,6 +9,7 @@ var PushoverToken=(process.env.PUSHOVER_TOKEN)?(process.env.PUSHOVER_TOKEN+""):"
 var PushoverUser=(process.env.PUSHOVER_USER)?(process.env.PUSHOVER_USER+""):"";
 //var webServer=(process.env.WEB_SERVER)?(process.env.WEB_SERVER+""):"";
 if(siteUrl.length<=5){console.info("Site Url not provided!!!");return;}
+siteUrl="https://"+siteUrl;
 if(nightscout.length<=5){console.info("NightScout URL not provided!!!");return;/*process.kill(process.pid, 'SIGTERM');*/}
 if(makerKey && makerKey.length===43){useMaker=true;}
 if(PushoverToken && PushoverUser && PushoverToken.length===30 && PushoverUser.length===30){usePushover=true;}
@@ -79,7 +80,7 @@ request.post('https://api.pushover.net/1/messages.json', {form:formObj}).on('res
 function handleResp(resp){
 var rec=resp.bgs[0];currRec=JSON.parse(JSON.stringify(rec));sgvTime=rec.datetime;var recTime=new Date(rec.datetime);var now=new Date();var minutesAgo=(now.getTime()-recTime.getTime())/(1000*60);
 var delta=rec.bgdelta+"";if (delta.indexOf("-")===-1){delta="+"+delta}
-sgvValue=parseFloat(rec.sgv);
+sgvValue=rec.sgv;
 if(firstResp){firstResp=false;if(sgvValue<40){unit="mmol";if(lowBg>=40){lowBg/=18;}if(highBg>=40){highBg/=18;}console.log("unit is mmol");} else {
 unit="mgdl";if(lowBg<40){lowBg*=18;}if(highBg<40){highBg*=18;}console.log("unit is mgdl");}}
 if(minutesAgo>=0.26){console.log("older than 15.6sec");return;}
@@ -91,9 +92,8 @@ sendMakerRequest("miki-cgmreading",sgvValue,deltaArrow,iob);
 if (sgvValue<=lowBg){sendPushover("Nightscout LOW BG: "+sgvValue+" "+deltaArrow,sgvValue,deltaArrow,iob);sendMakerRequest("miki-lowbg",sgvValue,deltaArrow,iob)
 } else if (sgvValue>=highBg){sendPushover("Nightscout HIGH BG: "+sgvValue+" "+deltaArrow,sgvValue,deltaArrow,iob);sendMakerRequest("miki-highbg",sgvValue,deltaArrow,iob)}}
 
-https.get('https://'+siteUrl, (resp) => {let data = '';resp.on('data', (chunk) => {data+=chunk;});resp.on('end', () => {console.log("https response: "+data);});}).on("error", (err) => {console.log("Error: " + err.message);});
-//setTimeout(function(){request.get(siteUrl).on('response',function(response){console.log("timeout successfully requested: "+siteUrl)}).on('error',function(err){console.log("timeout request failed, URL: "+siteUrl+" error: "+err);});},10000);
-//setInterval(function(){request.get(siteUrl).on('response',function(response){console.log("interval successfully requested: "+siteUrl)}).on('error',function(err){console.log("interval request failed, URL: "+siteUrl+" error: "+err);});},5*60*1000); 
+setTimeout(function(){request.get(siteUrl).on('response',function(response){console.log("timeout successfully requested: "+siteUrl)}).on('error',function(err){console.log("timeout request failed, URL: "+siteUrl+" error: "+err);});},10000);
+setInterval(function(){request.get(siteUrl).on('response',function(response){console.log("interval successfully requested: "+siteUrl)}).on('error',function(err){console.log("interval request failed, URL: "+siteUrl+" error: "+err);});},5*60*1000); 
 //function leadZero(m){if(m<10){m="0"+m;}return m;}
 //var timenow=new Date(),hr=(timenow.getHours()+2<24)?(timenow.getHours()+2):(timenow.getHours()+2-24),timestart=leadZero(hr)+":"+leadZero(timenow.getMinutes());
 })();
