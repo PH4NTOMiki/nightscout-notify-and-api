@@ -1,19 +1,19 @@
 (function (){
 var request = require('request');
-var arrows={Flat:"\u2192",FortyFiveUp:"\u2197",FortyFiveDown:"\u2198",SingleUp:"\u2191",SingleDown:"\u2193",DoubleUp:"\u21C8",DoubleDown:"\u21CA"},tempdate=3589420,isEmpty=false,useMaker=false,usePushover=false,useServer=false,express,cors,app,server,unit,sgvValue,sgvTime,firstResp=true,currRec={sgv:"",trend:0,direction:"",datetime:0,bgdelta:0,battery:""};
+var arrows={Flat:"\u2192",FortyFiveUp:"\u2197",FortyFiveDown:"\u2198",SingleUp:"\u2191",SingleDown:"\u2193",DoubleUp:"\u21C8",DoubleDown:"\u21CA"},tempdate=3589420,isEmpty=false,useMaker=false,usePushover=false,express,cors,app,server,unit,sgvValue,sgvTime,firstResp=true,currRec={sgv:"",trend:0,direction:"",datetime:0,bgdelta:0,battery:""};
 
 var nightscout=(process.env.NIGHTSCOUT)?(process.env.NIGHTSCOUT+""):"";
 var siteUrl=(process.env.SITE_URL)?(process.env.SITE_URL+""):"";
 var makerKey=(process.env.MAKER_KEY)?(process.env.MAKER_KEY+""):"";
 var PushoverToken=(process.env.PUSHOVER_TOKEN)?(process.env.PUSHOVER_TOKEN+""):"";
 var PushoverUser=(process.env.PUSHOVER_USER)?(process.env.PUSHOVER_USER+""):"";
-var webServer=(process.env.WEB_SERVER)?(process.env.WEB_SERVER+""):"";
+//var webServer=(process.env.WEB_SERVER)?(process.env.WEB_SERVER+""):"";
 if(siteUrl.length<=5){console.info("Site Url not provided!!!");return;}
 if(nightscout.length<=5){console.info("NightScout URL not provided!!!");return;/*process.kill(process.pid, 'SIGTERM');*/}
 if(makerKey && makerKey.length===43){useMaker=true;}
 if(PushoverToken && PushoverUser && PushoverToken.length===30 && PushoverUser.length===30){usePushover=true;}
 
-function serverHandler(){useServer=true;express=require('express');cors=require('cors');app=express();app.use(cors());server=app.listen(process.env.PORT || 3000);console.log("listening on port: "+(process.env.PORT || 3000));
+express=require('express');cors=require('cors');app=express();app.use(cors());server=app.listen(process.env.PORT || 3000);console.log("listening on port: "+(process.env.PORT || 3000));
 app.all('/',function(req,res){res.contentType("text/html");res.end("Available end-points are: '/json' (with support for JSONP, parameter name is 'callback'), '/xml' and '/rss'")});
 app.all('/json',function(req,res){
 var rtrn=JSON.parse(JSON.stringify(currRec));
@@ -34,10 +34,10 @@ if(rtrn.sgv==""&&rtrn.trend==0&&rtrn.direction==""&&rtrn.datetime==0){rtrn['stat
 var values=Object.values(rtrn),xml=`<?xml version="1.0" encoding="UTF-8" ?><rss version="2.0"><channel><title>SGV</title><link>https://www.github.com/PH4NTOMiki</link><description>SGV</description><item><title>${rtrn.sgv} ${arrows[rtrn.direction]} ${rtrn.bgdelta}</title><description>${rtrn.sgv} ${arrows[rtrn.direction]} ${rtrn.bgdelta}</description></item></channel></rss>`;
 res.contentType("text/xml");
 res.end(xml);
-});}
+});
 
-if(webServer && webServer.toLowerCase()=="on"){useServer=true;serverHandler();}
-if(!useMaker && !usePushover && !useServer){console.info("Maker, Pushover and Web-Server are all disabled, ACTIVATING JUST WEB-SERVER!!!");useServer=true;serverHandler();}
+//if(webServer && webServer.toLowerCase()=="on"){useServer=true;serverHandler();}
+if(!useMaker && !usePushover){console.info("Maker and Pushover are disabled, ACTIVATING JUST WEB-SERVER!!!");}
 
 var timeInterval=5000;/*(process.env.TIME_INTERVAL)?(parseInt(process.env.TIME_INTERVAL)):5000;*/
 var lowBg=(process.env.LOW_BG)?(parseFloat(process.env.LOW_BG)):5.6;

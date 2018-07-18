@@ -27,11 +27,6 @@
       "value": "",
       "required": false
     },
-	"WEB_SERVER": {
-      "description": "REQUIRED: Do you want to use Web-Server(end-point are: '/json','/xml','/rss', and on json end-point you can use JSONP with callback query parameter). Possible values are on/off",
-      "value": "on",
-      "required": true
-    },
 	"LOW_BG": {
       "description": "Low BG value you would like to get alert. For this use unit you use on you NightScout portal, if you use different unit, it's OK, application will convert it",
       "value": "5.6",
