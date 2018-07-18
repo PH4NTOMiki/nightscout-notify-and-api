@@ -3,12 +3,12 @@
   "repository": "https://github.com/PH4NTOMiki/nightscout-notify-and-api",
   "env": {
     "NIGHTSCOUT": {
-      "description": "REQUIRED: NightScout URL, e.g. my-cgm.herokuapp.com or my-cgm.azurewebsites.net",
+      "description": "REQUIRED: NightScout URL, e.g. 'my-cgm.herokuapp.com' or 'my-cgm.azurewebsites.net'",
       "value": "",
       "required": true
     },
 	"SITE_URL": {
-	  "description": "REQUIRED: This app's url, e.g. https://myapp.herokuapp.com",
+	  "description": "REQUIRED: This app's url, e.g. 'myapp.herokuapp.com'",
 	  "value": "",
 	  "required": true
 	},
