@@ -90,8 +90,8 @@ sendMakerRequest("miki-cgmreading",sgvValue,deltaArrow,iob);
 if (sgvValue<=lowBg){sendPushover("Nightscout LOW BG: "+sgvValue+" "+deltaArrow,sgvValue,deltaArrow,iob);sendMakerRequest("miki-lowbg",sgvValue,deltaArrow,iob)
 } else if (sgvValue>=highBg){sendPushover("Nightscout HIGH BG: "+sgvValue+" "+deltaArrow,sgvValue,deltaArrow,iob);sendMakerRequest("miki-highbg",sgvValue,deltaArrow,iob)}}
 
-setTimeout(function(){request.get(siteUrl);},10000);
-setInterval(function(){request.get(siteUrl);},5*60*1000); 
+setTimeout(function(){request.get(siteUrl).on('response',function(response){console.log("timeout successfully requested: "+siteUrl)}).on('error',function(err){console.log("timeout request failed, URL: "+siteUrl+" error: "+err);});},10000);
+setInterval(function(){request.get(siteUrl).on('response',function(response){console.log("interval successfully requested: "+siteUrl)}).on('error',function(err){console.log("interval request failed, URL: "+siteUrl+" error: "+err);});},5*60*1000); 
 //function leadZero(m){if(m<10){m="0"+m;}return m;}
 //var timenow=new Date(),hr=(timenow.getHours()+2<24)?(timenow.getHours()+2):(timenow.getHours()+2-24),timestart=leadZero(hr)+":"+leadZero(timenow.getMinutes());
 })();
