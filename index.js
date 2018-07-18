@@ -9,7 +9,7 @@ var PushoverToken=(process.env.PUSHOVER_TOKEN)?(process.env.PUSHOVER_TOKEN+""):"
 var PushoverUser=(process.env.PUSHOVER_USER)?(process.env.PUSHOVER_USER+""):"";
 //var webServer=(process.env.WEB_SERVER)?(process.env.WEB_SERVER+""):"";
 if(siteUrl.length<=5){console.info("Site Url not provided!!!");return;}
-siteUrl="https://"+siteUrl;
+siteUrl="https://"+siteUrl+"/randcall";console.log("full URL: "+siteUrl);
 if(nightscout.length<=5){console.info("NightScout URL not provided!!!");return;/*process.kill(process.pid, 'SIGTERM');*/}
 if(makerKey && makerKey.length===43){useMaker=true;}
 if(PushoverToken && PushoverUser && PushoverToken.length===30 && PushoverUser.length===30){usePushover=true;}
