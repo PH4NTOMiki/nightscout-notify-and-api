@@ -9,12 +9,14 @@ var PushoverToken=(process.env.PUSHOVER_TOKEN)?(process.env.PUSHOVER_TOKEN+""):"
 var PushoverUser=(process.env.PUSHOVER_USER)?(process.env.PUSHOVER_USER+""):"";
 //var webServer=(process.env.WEB_SERVER)?(process.env.WEB_SERVER+""):"";
 if(siteUrl.length<=5){console.info("Site Url not provided!!!");return;}
+if(siteUrl.substr(siteUrl.length-1,siteUrl.length)=="/"){siteUrl+="awakecall";} else {siteUrl+="/awakecall";}
 if(nightscout.length<=5){console.info("NightScout URL not provided!!!");return;/*process.kill(process.pid, 'SIGTERM');*/}
 if(makerKey && makerKey.length===43){useMaker=true;}
 if(PushoverToken && PushoverUser && PushoverToken.length===30 && PushoverUser.length===30){usePushover=true;}
 
 express=require('express');cors=require('cors');app=express();app.use(cors());server=app.listen(process.env.PORT || 3000);console.log("listening on port: "+(process.env.PORT || 3000));
 app.all('/',function(req,res){res.contentType("text/html");res.end("Available end-points are: '/json' (with support for JSONP, parameter name is 'callback'), '/xml' and '/rss'")});
+app.all('/awakecall',function(req,res){console.log("received awakecall");res.contentType("text/html");res.end("OK");});
 app.all('/json',function(req,res){
 var rtrn=JSON.parse(JSON.stringify(currRec));
 if(rtrn.sgv==""&&rtrn.trend==0&&rtrn.direction==""&&rtrn.datetime==0){rtrn['status']="ERR";} else {rtrn['status']="OK";}
